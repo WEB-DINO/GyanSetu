@@ -13,17 +13,20 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        // Define a custom color for the new background
-                        'custom-bg': '#00555a', // Using #008780, a dark teal
+                        cream: '#FDFCEF', // Light cream for background
+                        lightOrange: '#F9B572', // Light orange for user messages
+                        emeraldGreen: '#52B788', // Emerald green for AI messages and accents
+                        darkEmerald: '#429A74', // Darker emerald for hover states
+                        darkText: '#344E41', // Darker text for readability
                     }
-                },
+                }
             }
         }
     </script>
     <style>
         /* Custom styling for a modern look */
         .chat-container {
-            max-height: 70vh;
+            /* Removed fixed height constraint, now uses flex-grow */
             overflow-y: auto;
             scroll-behavior: smooth;
         }
@@ -34,38 +37,47 @@
             margin-bottom: 10px;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
+        /* Using hex values here since raw CSS doesn't recognize Tailwind aliases */
         .user-message {
-            background-color: #3b82f6; /* Blue 500 */
+            background-color: #F9B572; /* lightOrange */
             color: white;
             margin-left: auto;
         }
         .ai-message {
-            background-color: #f3f4f6; /* Gray 100 */
-            color: #1f2937; /* Gray 800 */
+            background-color: #52B788; /* emeraldGreen */
+            color: white;
             margin-right: auto;
         }
     </style>
 </head>
-<body class="bg-custom-bg min-h-screen flex items-center justify-center p-4 font-sans">
+<!-- 1. Changed body for full screen layout and primary text color -->
+<body class="bg-cream min-h-screen flex flex-col font-sans p-4 text-darkText">
 
-    <div class="w-full max-w-lg bg-blue rounded-xl shadow-2xl p-6">
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">Gyanmitra</h1>
+    <!-- 2. Main container now fills available space (h-[95vh] or h-[90vh] on desktop) -->
+    <div class="flex flex-col w-full max-w-4xl mx-auto bg-white rounded-xl shadow-2xl p-6 flex-grow h-[95vh] md:h-[90vh]">
+        
+        <h1 class="text-3xl font-extrabold text-darkText mb-6 text-center shrink-0">Gemini Q&A</h1>
 
-        <div id="chat-messages" class="chat-container mb-6 rounded-lg bg-gray-50 p-4 border border-gray-200">
-            <div class="ai-message message-bubble">Hello! Myself Gyanmitra Your Instant Dought Solver ,Ask me Your Dought And I Will Try to Clear It</div>
+        <!-- 3. Chat Display Area uses flex-grow to fill remaining space -->
+        <div id="chat-messages" class="chat-container mb-6 rounded-lg bg-gray-50 p-4 border border-gray-200 overflow-y-auto flex-grow">
+            <div class="ai-message message-bubble">Hello! Ask me anything, and I'll find an answer using Google Search.</div>
         </div>
 
-        <div class="flex space-x-3">
-            <input type="text" id="user-input" placeholder="Ask a question..." class="flex-grow p-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150" onkeydown="if(event.key === 'Enter') sendMessage()">
-            <button onclick="sendMessage()" id="send-button" class="bg-[#bb9359] text-white p-3 rounded-full hover:bg-[#bb9359] transition duration-150 shadow-md flex items-center justify-center">
+        <!-- Input Area (shrink-0) -->
+        <div class="flex space-x-3 shrink-0">
+            <!-- Input text color uses darkText implicitly, border/focus uses emeraldGreen -->
+            <input type="text" id="user-input" placeholder="Ask a question..." class="flex-grow p-3 border border-gray-300 rounded-full focus:ring-2 focus:ring-emeraldGreen focus:border-emeraldGreen transition duration-150" onkeydown="if(event.key === 'Enter') sendMessage()">
+            <button onclick="sendMessage()" id="send-button" class="bg-emeraldGreen text-white p-3 rounded-full hover:bg-darkEmerald transition duration-150 shadow-md flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
             </button>
         </div>
 
-        <div id="loading-indicator" class="mt-4 text-center hidden">
+        <!-- Loading Indicator (shrink-0) -->
+        <div id="loading-indicator" class="mt-4 text-center hidden shrink-0">
             <div class="flex justify-center items-center">
-                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-3"></div>
-                <span class="text-blue-600 font-medium">Thinking...</span>
+                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-emeraldGreen mr-3"></div>
+                <!-- Text color uses darkText inherited from parent, but here we explicitly use emeraldGreen for the spin -->
+                <span class="text-emeraldGreen font-medium">Thinking...</span>
             </div>
         </div>
         
@@ -86,7 +98,6 @@
 
         /**
          * The core function that uses exponential backoff to retry fetch requests.
-         * This directly addresses the potential "Failed to fetch" due to transient network issues.
          * @param {string} url - The API endpoint URL.
          * @param {object} options - Fetch request options (method, headers, body).
          * @param {number} maxRetries - Maximum number of retries.
@@ -131,9 +142,15 @@
             if (sources.length > 0) {
                 const sourcesDiv = document.createElement('div');
                 sourcesDiv.classList.add('text-xs', 'mt-2', 'pt-1', 'border-t', 'border-gray-200');
+                
+                // For AI message (emerald green bubble), links should be white/lightOrange
+                const linkClass = sender === 'ai' 
+                    ? 'text-white hover:text-lightOrange underline' 
+                    : 'text-darkText hover:text-emeraldGreen underline'; // Fallback for user message, though unlikely to have sources
+
                 sourcesDiv.innerHTML = '<strong>Sources:</strong><ul>' + 
                     sources.map((src, index) => 
-                        `<li><a href="${src.uri}" target="_blank" class="text-blue-300 hover:text-blue-200 underline">${src.title || 'Source ' + (index + 1)}</a></li>`
+                        `<li><a href="${src.uri}" target="_blank" class="${linkClass}">${src.title || 'Source ' + (index + 1)}</a></li>`
                     ).join('') + 
                     '</ul>';
                 messageDiv.appendChild(sourcesDiv);
