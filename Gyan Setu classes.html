@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gyan Setu - Subject Selection</title>
+    <style>
+        /* CSS for Full Screen Layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+            /* Changed background color to cream */
+            background-color: #FFFDD0; 
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background-color: #ffffff; /* Keeping container white for contrast */
+            box-shadow: none;
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: center;
+        }
+
+        /* Text Styling */
+        .title {
+            font-size: 2.5em;
+            /* Title color remains dark teal/cyan */
+            color: #00555a; 
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Subheading Styling */
+        h2 {
+            font-size: 2em;
+            color: #00555a;
+            margin-bottom: 30px;
+        }
+
+        /* Content Area in Sub-pages */
+        .content {
+            padding: 20px;
+            border: 1px solid #00555a20; /* Light border using primary color */
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+            width: 80%;
+            max-width: 900px;
+            height: 60vh;
+            overflow-y: auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 85, 90, 0.05);
+        }
+
+        /* Button Styling */
+        .button, .back-button {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s;
+            font-size: 1.1em;
+            font-weight: 600;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button {
+            /* Primary button color remains bright orange/amber */
+            background-color: #fdaa48; 
+            color: #00555a; /* Dark text for contrast against bright orange */
+        }
+        
+        .button:hover {
+            background-color: #ffb861; /* Slightly lighter on hover */
+            transform: translateY(-2px);
+        }
+
+        .back-button {
+            /* Back button color remains muted gold/brown */
+            background-color: #bb9359; 
+            color: white;
+            margin-top: 20px;
+        }
+        
+        .back-button:hover {
+            background-color: #d1a96f; /* Slightly lighter on hover */
+            transform: translateY(-2px);
+        }
+        
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 80%;
+            max-width: 1000px;
+        }
+
+        /* Specific container adjustments for lesson buttons */
+        #page3 .buttons-container, #page4 .buttons-container, 
+        #page5 .buttons-container, #page6 .buttons-container {
+            gap: 15px;
+        }
+        #page3 .button, #page4 .button, 
+        #page5 .button, #page6 .button {
+            max-width: 200px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Page 2: Main Subject Menu --><div id="page2" class="container" style="display: flex;">
+    <div class="title">Welcome to Gyan Setu, Please Select Your Subject</div>
+    <div class="buttons-container">
+        <button class="button" onclick="showPage('page3')">Science</button>
+        <button class="button" onclick="showPage('page4')">Social</button>
+        <button class="button" onclick="showPage('page5')">English</button>
+        <button class="button" onclick="showPage('page6')">Maths</button>
+    </div>
+</div>
+
+<!-- Page 3: Science Lessons --><div id="page3" class="container" style="display: none;">
+    <h2>🔬 Science Lessons</h2>
+    <div class="buttons-container">
+        <button class="button" onclick="showPage('page3-1')">The Cell</button>
+        <button class="button" onclick="showPage('page3-2')">Chemical Reactions</button>
+        <button class="button" onclick="showPage('page3-3')">Newton's Laws</button>
+        <button class="button" onclick="showPage('page3-4')">Photosynthesis</button>
+        <button class="button" onclick="showPage('page3-5')">Gravity & Space</button>
+    </div>
+    <button class="back-button" onclick="showPage('page2')">Back to Subjects</button>
+</div>
+
+<!-- Page 4: Social Lessons --><div id="page4" class="container" style="display: none;">
+    <h2>🌍 Social Studies Lessons</h2>
+    <div class="buttons-container">
+        <button class="button" onclick="showPage('page4-1')">Indian Constitution</button>
+        <button class="button" onclick="showPage('page4-2')">Mughal Empire</button>
+        <button class="button" onclick="showPage('page4-3')">Geography of Rivers</button>
+        <button class="button" onclick="showPage('page4-4')">Democracy</button>
+        <button class="button" onclick="showPage('page4-5')">World Wars</button>
+    </div>
+    <button class="back-button" onclick="showPage('page2')">Back to Subjects</button>
+</div>
+
+<!-- Page 5: English Lessons --><div id="page5" class="container" style="display: none;">
+    <h2>📝 English Lessons</h2>
+    <div class="buttons-container">
+        <button class="button" onclick="showPage('page5-1')">The Passive Voice</button>
+        <button class="button" onclick="showPage('page5-2')">Poetry Analysis</button>
+        <button class="button" onclick="showPage('page5-3')">Formal Letter Writing</button>
+        <button class="button" onclick="showPage('page5-4')">Short Story: The Gift</button>
+        <button class="button" onclick="showPage('page5-5')">Reported Speech</button>
+    </div>
+    <button class="back-button" onclick="showPage('page2')">Back to Subjects</button>
+</div>
+
+<!-- Page 6: Maths Lessons --><div id="page6" class="container" style="display: none;">
+    <h2>📐 Maths Lessons</h2>
+    <div class="buttons-container">
+        <button class="button" onclick="showPage('page6-1')">Algebraic Identities</button>
+        <button class="button" onclick="showPage('page6-2')">Trigonometry Basics</button>
+        <button class="button" onclick="showPage('page6-3')">Quadratic Equations</button>
+        <button class="button" onclick="showPage('page6-4')">Probability</button>
+        <button class="button" onclick="showPage('page6-5')">Mensuration</button>
+    </div>
+    <button class="back-button" onclick="showPage('page2')">Back to Subjects</button>
+</div>
+
+<!-- Lesson Content Pages (placeholders) --><div id="page3-1" class="container" style="display: none;">
+    <div class="title">Science Lesson 1: The Cell</div>
+    <div class="content">The cell is the basic structural, functional, and biological unit of all known organisms. It is the smallest unit of life. Cells are often called the "building blocks of life."</div>
+    <button class="back-button" onclick="showPage('page3')">Back to Science</button>
+</div>
+<div id="page3-2" class="container" style="display: none;">
+    <div class="title">Science Lesson 2: Chemical Reactions</div>
+    <div class="content">A chemical reaction is a process that leads to the chemical transformation of one set of chemical substances to another. Chemical reactions are everywhere, from the cooking of food to the rusting of iron.</div>
+    <button class="back-button" onclick="showPage('page3')">Back to Science</button>
+</div>
+<div id="page3-3" class="container" style="display: none;">
+    <div class="title">Science Lesson 3: Newton's Laws</div>
+    <div class="content">Sir Isaac Newton's three laws of motion describe the relationship between a body and the forces acting upon it, and its motion in response to those forces. They form the basis of classical mechanics.</div>
+    <button class="back-button" onclick="showPage('page3')">Back to Science</button>
+</div>
+<div id="page3-4" class="container" style="display: none;">
+    <div class="title">Science Lesson 4: Photosynthesis</div>
+    <div class="content">Photosynthesis is the process used by plants, algae, and certain bacteria to convert light energy into chemical energy, which fuels the organism's activities.</div>
+    <button class="back-button" onclick="showPage('page3')">Back to Science</button>
+</div>
+<div id="page3-5" class="container" style="display: none;">
+    <div class="title">Science Lesson 5: Gravity & Space</div>
+    <div class="content">Gravity is a fundamental force of nature that attracts masses towards each other. It is what keeps planets in orbit around stars, and stars grouped into galaxies.</div>
+    <button class="back-button" onclick="showPage('page3')">Back to Science</button>
+</div>
+
+<div id="page4-1" class="container" style="display: none;">
+    <div class="title">Social Lesson 1: Indian Constitution</div>
+    <div class="content">The Constitution of India is the supreme law of India. It lays down the framework defining fundamental political principles, structure, procedures, powers and duties of government institutions.</div>
+    <button class="back-button" onclick="showPage('page4')">Back to Social</button>
+</div>
+<div id="page4-2" class="container" style="display: none;">
+    <div class="title">Social Lesson 2: Mughal Empire</div>
+    <div class="content">The Mughal Empire was an early modern empire that controlled much of South Asia between the 16th and 19th centuries. It was known for its grand architecture and culture.</div>
+    <button class="back-button" onclick="showPage('page4')">Back to Social</button>
+</div>
+<div id="page4-3" class="container" style="display: none;">
+    <div class="title">Social Lesson 3: Geography of Rivers</div>
+    <div class="content">Rivers play a vital role in shaping the geography of a region, providing fertile land, water resources, and historical trade routes.</div>
+    <button class="back-button" onclick="showPage('page4')">Back to Social</button>
+</div>
+<div id="page4-4" class="container" style="display: none;">
+    <div class="title">Social Lesson 4: Democracy</div>
+    <div class="content">Democracy is a system of government where the citizens exercise power, either directly or by electing representatives from among themselves to form a governing body.</div>
+    <button class="back-button" onclick="showPage('page4')">Back to Social</button>
+</div>
+<div id="page4-5" class="container" style="display: none;">
+    <div class="title">Social Lesson 5: World Wars</div>
+    <div class="content">The two World Wars of the 20th century reshaped the global political map and led to the creation of international bodies designed to promote peace and cooperation.</div>
+    <button class="back-button" onclick="showPage('page4')">Back to Social</button>
+</div>
+
+<div id="page5-1" class="container" style="display: none;">
+    <div class="title">English Lesson 1: The Passive Voice</div>
+    <div class="content">The passive voice is a grammatical construction where the subject of the sentence is the recipient of the action rather than the performer of the action. Example: "The ball was thrown by the boy."</div>
+    <button class="back-button" onclick="showPage('page5')">Back to English</button>
+</div>
+<div id="page5-2" class="container" style="display: none;">
+    <div class="title">English Lesson 2: Poetry Analysis</div>
+    <div class="content">Analyzing poetry involves examining its form, structure, rhythm, rhyme scheme, and literary devices (like metaphors and similes) to understand the poet's message.</div>
+    <button class="back-button" onclick="showPage('page5')">Back to English</button>
+</div>
+<div id="page5-3" class="container" style="display: none;">
+    <div class="title">English Lesson 3: Formal Letter Writing</div>
+    <div class="content">Formal letters are used for official purposes, such as communicating with businesses, government departments, or school authorities. They require a specific, structured format.</div>
+    <button class="back-button" onclick="showPage('page5')">Back to English</button>
+</div>
+<div id="page5-4" class="container" style="display: none;">
+    <div class="title">English Lesson 4: Short Story: The Gift</div>
+    <div class="content">This lesson explores a classic short story, focusing on character development, plot twists, and underlying themes like sacrifice and love.</div>
+    <button class="back-button" onclick="showPage('page5')">Back to English</button>
+</div>
+<div id="page5-5" class="container" style="display: none;">
+    <div class="title">English Lesson 5: Reported Speech</div>
+    <div class="content">Reported speech (or indirect speech) is how we tell someone what another person said without using the exact words. Tense changes and shifts in pronouns are necessary.</div>
+    <button class="back-button" onclick="showPage('page5')">Back to English</button>
+</div>
+
+<div id="page6-1" class="container" style="display: none;">
+    <div class="title">Maths Lesson 1: Algebraic Identities</div>
+    <div class="content">Algebraic identities are equations that are true for all values of the variables. Key identities include $(a+b)^2$, $(a-b)^2$, and $(a^2 - b^2)$.</div>
+    <button class="back-button" onclick="showPage('page6')">Back to Maths</button>
+</div>
+<div id="page6-2" class="container" style="display: none;">
+    <div class="title">Maths Lesson 2: Trigonometry Basics</div>
+    <div class="content">Trigonometry deals with the relationships between the sides and angles of triangles. The primary functions are sine, cosine, and tangent.</div>
+    <button class="back-button" onclick="showPage('page6')">Back to Maths</button>
+</div>
+<div id="page6-3" class="container" style="display: none;">
+    <div class="title">Maths Lesson 3: Quadratic Equations</div>
+    <div class="content">A quadratic equation is a second-degree polynomial equation in a single variable $x$, where $a \ne 0$. The general form is $ax^2 + bx + c = 0$.</div>
+    <button class="back-button" onclick="showPage('page6')">Back to Maths</button>
+</div>
+<div id="page6-4" class="container" style="display: none;">
+    <div class="title">Maths Lesson 4: Probability</div>
+    <div class="content">Probability is the measure of the likelihood that an event will occur. It is quantified as a number between 0 and 1, where 0 indicates impossibility and 1 indicates certainty.</div>
+    <button class="back-button" onclick="showPage('page6')">Back to Maths</button>
+</div>
+<div id="page6-5" class="container" style="display: none;">
+    <div class="title">Maths Lesson 5: Mensuration</div>
+    <div class="content">Mensuration is the branch of geometry that is concerned with the measurement of lengths, areas, and volumes of geometric figures, such as circles, spheres, and prisms.</div>
+    <button class="back-button" onclick="showPage('page6')">Back to Maths</button>
+</div>
+
+<script>
+    // Simple page navigation function
+    function showPage(pageId) {
+        const pages = document.querySelectorAll('.container');
+        pages.forEach(page => {
+            page.style.display = 'none';
+        });
+        // Display the requested page using 'flex'
+        const requestedPage = document.getElementById(pageId);
+        if (requestedPage) {
+            requestedPage.style.display = 'flex';
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access Gate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#00555a', // Dark Teal
+                        'secondary': '#bb9359', // Gold/Brownish-yellow
+                        'accent': '#fdaa48', // Bright Orange
+                        // Updated background color definition for success/error messages
+                        'message-bg': '#FFFDD0', // Cream background for messages
+                        'success-text': '#50c878', // Medium Spring Green (used for text in success message)
+                        'error-text': '#00555a', // Dark Teal (used for text in error message)
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+            plugins: [],
+        }
+    </script>
+    <style>
+        /* Custom styles to ensure the page fills the viewport */
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        /* Removed custom CSS text-error class as it's now handled by the JS function */
+    </style>
+</head>
+<body class="bg-[#FFFDD0] flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-sm bg-white p-8 rounded-xl shadow-2xl border border-gray-200">
+        <header class="text-center mb-6">
+            <svg class="mx-auto h-12 w-12 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <h1 class="text-3xl font-bold text-gray-900 mt-2">Passcode Access</h1>
+            <p class="text-sm text-gray-500">Enter a 4-digit access code.</p>
+        </header>
+
+        <form id="accessForm" onsubmit="handleAccess(event)">
+            <div class="mb-4">
+                <label for="passcode" class="block text-sm font-medium text-gray-700 sr-only">4-Digit Passcode</label>
+                <input
+                    type="password"
+                    id="passcode"
+                    name="passcode"
+                    maxlength="4"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    required
+                    class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-center text-2xl tracking-widest"
+                    placeholder="****"
+                >
+            </div>
+
+            <div id="messageBox" class="p-3 text-center rounded-lg mb-4 hidden" role="alert"></div>
+
+            <button
+                type="submit"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-150 ease-in-out"
+            >
+                Access Site
+            </button>
+        </form>
+        
+        <footer class="text-xs text-gray-400 text-center mt-6">
+            <p>For demonstration purposes only. All codes are client-side.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- Code-to-URL Mapping ---
+        const ACCESS_MAP = {
+            "1111": "https://www.youtube.com",
+            "2222": "https://www.example.com/Client-Portal",
+            "3333": "https://www.example.com/Team-Wiki",
+            "4444": "https://www.example.com/HR-Forms",
+            "5555": "https://www.example.com/Dev-Docs",
+            "6666": "https://www.example.com/Design-Assets",
+            "7777": "https://www.example.com/Sales-Report",
+            "8888": "https://www.example.com/Finance-Data",
+            "9999": "https://www.example.com/Training-Videos",
+            "0000": "https://www.example.com/Internal-Memo"
+        };
+
+        const messageBox = document.getElementById('messageBox');
+        const passcodeInput = document.getElementById('passcode');
+
+        /**
+         * Displays a message in the message box.
+         * @param {string} message - The message text.
+         * @param {string} type - 'success' or 'error'.
+         */
+        function displayMessage(message, type) {
+            messageBox.textContent = message;
+            // Clear previous message classes and styles
+            messageBox.classList.remove('hidden', 'bg-message-bg', 'text-error-text', 'text-success-text');
+            messageBox.style.borderWidth = '1px';
+            messageBox.style.borderColor = ''; // Clear custom border color
+
+            // Apply Cream background for the message box
+            messageBox.classList.add('bg-message-bg'); 
+
+            if (type === 'error') {
+                // Error uses Dark Teal text and border
+                messageBox.classList.add('text-error-text');
+                messageBox.style.borderColor = '#00555a'; // primary color border
+            } else if (type === 'success') {
+                // Success uses Medium Spring Green text and border
+                messageBox.classList.add('text-success-text');
+                messageBox.style.borderColor = '#50c878'; // success-text color border
+            }
+        }
+
+        /**
+         * Handles the form submission and checks the passcode.
+         * @param {Event} event - The form submission event.
+         */
+        function handleAccess(event) {
+            event.preventDefault();
+
+            // Clear previous messages and custom styles before checking
+            messageBox.classList.add('hidden');
+            messageBox.style.borderWidth = '0';
+            
+            const passcode = passcodeInput.value.trim();
+
+            if (passcode.length !== 4) {
+                displayMessage("Passcode must be exactly 4 digits.", 'error');
+                return;
+            }
+
+            const targetUrl = ACCESS_MAP[passcode];
+
+            if (targetUrl) {
+                // Success: Redirect
+                displayMessage(`Success! Redirecting to ${targetUrl.split('/')[2]}...`, 'success');
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 800); 
+
+            } else {
+                // Failure: Passcode not found
+                displayMessage("Invalid access code. Please try again.", 'error');
+                passcodeInput.value = ''; // Clear the input field
+                passcodeInput.focus();
+            }
+        }
+    </script>
+</body>
+</html>
